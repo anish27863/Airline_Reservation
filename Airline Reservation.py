@@ -1,6 +1,9 @@
 import random
 import pandas as pd
-#import payment as upi
+import mysql.connector
+con=mysql.connector.connect(host='127.0.0.1',user='Anish',passwd='12345',database='airline')
+cursor=con.cursor()
+import payment as upi
 tickets={}
 
 def display_menu():
@@ -25,55 +28,15 @@ def exitf():
 def planes_available():
   '''prints available planes'''
   global planes
-  planes = {
-    "12345": {
-        "Plane_name ": "Bhagirathi Express",
-        "Plane_Number " :"12345" ,
-        "Departure_station ": "Lalgola",
-        "Departure_time ": "06:00 AM",
-        "Arrival_station ": "Sealdah",
-        "Arrival_time" : "11:00 AM"
-    },
-    "56786": {
-        "Plane_name ": "Teesta Torsa Express",
-        "Plane_Number " :"56786" ,
-        "Departure_station ": "New Alipurduar",
-        "Departure_time ": "10:30 AM",
-        "Arrival_station ": "Azimganj",
-        "Arrival_time" : "06:00 PM"
-    },
-    "90120": {
-        "Plane_name ": "Malda Town Express",
-        "Plane_Number " :"90120" ,
-        "Departure_station ": "Nabadwip Dham",
-        "Departure_time ": "11:59 PM",
-        "Arrival_station ": "Malda Town",
-        "Arrival_time" : "07:00 AM"
-    },
-    "34756": {
-        "Plane_name ": "Dhano Dhanye Express",
-        "Plane_Number " :"34756" ,
-        "Departure_station ": "Lalgola",
-        "Departure_time ": "06:00 AM",
-        "Arrival_station ": "Kolkata",
-        "Arrival_time" : "03:00 PM"
-    },
-    "78690": {
-        "Plane_name ": "Howrah Intercity Express",
-        "Plane_Number " :"78690" ,
-        "Departure_station ": "Azimganj",
-        "Departure_time ": "02:00 PM",
-        "Arrival_station ": "Howrah",
-        "Arrival_time" : "09:00 PM"
-    }
-}
-  print(pd.DataFrame.from_dict(planes, orient='index').reset_index(drop=True))
+  cursor.execute('SELECT * FROM planes')
+  planes=cursor.fetchall()
+  print(pd.DataFrame.from_records(planes).reset_index(drop=True))
 
 
 def seat_availability():
   '''checks seat availablilty in the selected Plane'''
   tno=input("Enter Plane number")
-  global boardingstaion,unboardingstation,date,ac1,ac2,ac3,sl,st
+  global boardingstaion,unboardingstation,date,ac1,ac2,ac3,sl,st,seats
   if(tno in planes):
     boardingstaion=input("Enter boarding station: ")
     unboardingstation=input("Enter unboarding station: ")
