@@ -17,6 +17,7 @@ def display_menu():
   print("5. Check PNR status")
   print("6. View tickets")
   print("7. Exit")
+  print("8.login")
   print("\nPlease enter your choice (1-7): ")
 
 
@@ -32,6 +33,16 @@ def planes_available():
   planes=cursor.fetchall()
   print(pd.DataFrame.from_records(planes).reset_index(drop=True))
 
+def login():
+  uid=input("Enter username ")
+  name=input("Enter your name ")
+  email=input("Enter email address ")
+  ph=int(input("Enter phone number "))
+  passw=input("Create password")
+  sql="INSERT INTO users(username,Full_Name,email,phone,passw) VALUES(%s,%s,%s,%s,%s)"
+  values=(uid,name,email,ph,passw)
+  cursor.execute(sql,values)
+  con.commit()
 
 def seat_availability():
   '''checks seat availablilty in the selected Plane'''
@@ -80,6 +91,7 @@ def seat_availability():
 def ticketbooking():
   '''books the ticket'''
   fare=0
+  cla=''
   berth=["upper",'middle',"lower","Side upper","side lower"]
   n=int(input("Enter number of tickets you wish to book: "))
   for i in range(1,n+1):
@@ -178,6 +190,9 @@ def main():
     elif choice == 7:
       exitf()
       break
+    elif choice == 8:
+      login()
+      pass
     else:
       print("Invalid choice. Please try again.")
 
