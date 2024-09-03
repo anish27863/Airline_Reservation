@@ -4,6 +4,7 @@ import mysql.connector
 con=mysql.connector.connect(host='127.0.0.1',user='Anish',passwd='12345',database='airline')
 cursor=con.cursor()
 import payment as upi
+c=0
 tickets={}
 
 def display_menu():
@@ -161,10 +162,10 @@ def sign_up():
   uid=input("Enter username ")
   name=input("Enter your name ")
   email=input("Enter email address ")
-  ph=int(input("Enter phone number "))
+  ph=input("Enter phone number ")
   passw=input("Create password")
-  sql="INSERT INTO users(username,Full_Name,email,phone,passw) VALUES(%s,%s,%s,%s,%s)"
   values=(uid,name,email,ph,passw)
+  sql="INSERT INTO users(username,Full_Name,email,phone,passw) VALUES(%s,%s,%s,%s,%s)"
   cursor.execute(sql,values)
   con.commit()
 
@@ -191,7 +192,7 @@ def sign_in():
       print("Do you want to retry, enter yes or no")
       ret=input()
       if ret.lower=='no' :
-        exitf()  
+       flag=False  
 
 def execution():
   initial_display_menu()
