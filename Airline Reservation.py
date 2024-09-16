@@ -18,7 +18,6 @@ def display_menu():
   print("7. Exit")
   print("\nPlease enter your choice (1-7): ")
 
-
 def initial_display_menu():
   print("\nAirline Reservation System")
   print("-" * 30)
@@ -33,55 +32,21 @@ def exitf():
 
 
 def planes_available():
+  cursor2=con.cursor()
   '''prints available planes'''
-  global planes
-  cursor.execute('SELECT * FROM planes')
-  planes=cursor.fetchall()
-  print(pd.DataFrame.from_records(planes).reset_index(drop=True))
-
-def seat_availability():
-  '''checks seat availablilty in the selected Plane'''
-  tno=input("Enter Plane number")
-  global boardingstaion,unboardingstation,date,ac1,ac2,ac3,sl,st,seats
-  if(tno in planes):
-    boardingstaion=input("Enter boarding station: ")
-    unboardingstation=input("Enter unboarding station: ")
-    date=input("Enter date of travel in the format dd.mm.yyyy: ")
-    # Define a dictionary to represent the available seats in each class
-    ac1=random.randint(0,20)
-    ac2=random.randint(0,50)
-    ac3=random.randint(0,80)
-    sl=random.randint(0,150)
-    st=random.randint(0,300)
-    seats = {
-    "First AC": {
-        "Available": ac1
-        
-    },
-    "Second AC": {
-        "Available": ac2
-        
-    },
-    "Third AC": {
-        "Available": ac3
-        
-    },
-    "Sleeper": {
-        "Available": sl
-        
-    },
-    "Sitting": {
-        "Available": st
-       
-    }
-  }
-
-# Print the available seats for each class
-  print("Available Seats:")
-  for class_name, seat_info in seats.items():
-    available_seats = seat_info["Available"]
-    print(f"{class_name}: {available_seats}")
-
+  strt=input("Enter source ")
+  end=input("Enter destination ")
+  val=(strt,end)
+  SQL="SELECT * FROM planes WHERE departure_place= %s and reaching_place= %s"
+  cursor2.execute(SQL,val)
+  dt=cursor2.fetchall()
+  #cursor.close()
+  if len(dt)!=0:
+    print("Found the following flights ")
+    print(pd.DataFrame.from_records(dt,columns=["Plane number","Destination","Source","Departure Time","Arrival Time","Airline Company"]).reset_index(drop=True))
+  else:
+    print("NO planes found")    
+  cursor2.close()
 
 def ticketbooking():
   '''books the ticket'''
@@ -122,7 +87,7 @@ def ticketbooking():
 
     
 
-   tickets.update({pnr:{"          Name : ":nm,"         Age : ":ag," Class: ":cla," Berth : ":random.choice(berth),"PNR: ":pnr,"       Boarding Station: ":boardingstaion,"Unboarding Station: ":unboardingstation,"Date: ":date}})
+   '''tickets.update({pnr:{"          Name : ":nm,"         Age : ":ag," Class: ":cla," Berth : ":random.choice(berth),"PNR: ":pnr,"       Boarding Station: ":boardingstaion,"Unboarding Station: ":unboardingstation,"Date: ":date}})
   print(pd.DataFrame.from_dict(tickets, orient='index').reset_index(drop=True))
   print(f"Payment Due= {fare}")
   num=int(input("Enter UPI id: "))
@@ -131,7 +96,7 @@ def ticketbooking():
     print("Ticket Booked succesfully")
   else:
     print("Wrong id or password, ticket not booked")
-    tickets.clear()   
+    tickets.clear()  ''' 
   
 
 def cancel_ticket():
@@ -168,11 +133,13 @@ def sign_up():
   sql="INSERT INTO users(username,Full_Name,email,phone,passw) VALUES(%s,%s,%s,%s,%s)"
   cursor.execute(sql,values)
   con.commit()
+  #cursor.close()
 
   print("Now login using your details: ")
   sign_in()
 
 def sign_in():
+  cursor=con.cursor()
   uid=input("Enter username: ")
   passw=input("Enter password: ")
   data=(uid,passw)
@@ -182,6 +149,7 @@ def sign_in():
   while flag:
     cursor.execute("SELECT username,passw from users")
     database_data=cursor.fetchone()
+    print(database_data)
     if(database_data==data):
       flag=False
       print('Welcome: ')
@@ -192,7 +160,8 @@ def sign_in():
       print("Do you want to retry, enter yes or no")
       ret=input()
       if ret.lower=='no' :
-       flag=False  
+       flag=False 
+  cursor.close()      
 
 def execution():
   initial_display_menu()
@@ -214,8 +183,8 @@ def main():
         # Implement Plane search functionality
         planes_available()
         pass
-      elif choice == 2:
-        seat_availability()
+      #elif choice == 2:
+        #seat_availability()
         # Implement seat availability check functionality
         pass
       elif choice == 3:
@@ -239,3 +208,4 @@ def main():
     sign_in()  
 
 main()        
+#planes_available()
