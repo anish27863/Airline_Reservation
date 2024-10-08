@@ -5,9 +5,8 @@ con=mysql.connector.connect(host='127.0.0.1',user='Anish',passwd='12345',databas
 cursor=con.cursor()
 import payment as upi
 c=0
-urnme=""
+urnme="aass"
 #urnme=str(urnme)
-tickets={}
 
 def display_menu():
   """Prints the menu options for the airline reservation system."""
@@ -57,7 +56,7 @@ def ticketbooking():
   pn=list(pno)
   f1,f2='',''
   #values=(fare,)
-  cl=input("Enter class:\n Economy \n Business ")
+  cl=input("Enter class:\n Economy \n Business \n ")
   cursor.execute("SELECT plane_number,fare1,fare2 FROM planes")
   combfare=cursor.fetchall()
   flg=False
@@ -91,29 +90,39 @@ def ticketbooking():
     except:
       print("Error")  
 
-
+def display_booked_tickets():
+  '''displays booksed tickets'''
+  cursor4=con.cursor()
+  bno=input("Enter booking number: ")
+  cursor4.execute("SELECT * FROM tickets WHERE booking_no= %s and username= %s",(bno,urnme))
+  tickets=cursor4.fetchall()
+  if(len(tickets)!=0):
+    print(pd.DataFrame.from_records(tickets, columns=["Username","Plane Number","Booking Number","Passenger Name", "Class", "Fare"]).reset_index(drop=True))
+    cursor4.close()
+    return bno    
+  else:
+    print("Ticket not found ")
+  
 
 def cancel_ticket():
-    '''cancels the ticket'''
-    a=int(input("Enter pnr number of the ticket to cancel"))
-    if a in tickets:
-        del tickets[a]
-        print("Your ticket has been deleted")
+  '''cancels the ticket'''
+  bno=display_booked_tickets()
+  if(bno!=None):
+    cursor4=con.cursor()
+    confirmation=input("Are you sure you want to delete the above ticket ??")
+    if(confirmation.lower=='yes'):
+      cursor4.execute("DELETE * FROM tickets WHERE booking_no=%s and username=%s",(bno,urnme))
+      con.commit()
 
-    else:
-        print("PNR not found")
-
-def pnr_status():
-    '''does the pnr status check'''
+'''def pnr_status():
+    #does the pnr status check
     a=int(input("Enter pnr number of the ticket "))
     if a in tickets:
         print("Booking is confirmed")
     else:
-        print("PNR not found") 
+        print("PNR not found") '''
 
-def display_booked_tickets():
-    '''displays booksed tickets'''
-    print(print(pd.DataFrame.from_dict(tickets, orient='index').reset_index(drop=True)) )           
+ 
 
 def sign_up():
   uid=input("Enter username ")
@@ -132,7 +141,7 @@ def sign_up():
 
 def sign_in():
   global urnme
-  cursor=con.cursor()
+  cursor1=con.cursor()
   uid=input("Enter username: ")
   urnme=uid
   passw=input("Enter password: ")
@@ -141,14 +150,13 @@ def sign_in():
   global c
   c=0
   while flag:
-    cursor.execute("SELECT username,passw from users")
-    database_data=cursor.fetchone()
-    print(database_data)
+    cursor1.execute("SELECT username,passw from users where username=%s and passw=%s",(uid,passw))
+    database_data=cursor.fetchall()
+    #print(database_data)
     if(database_data==data):
       flag=False
       print('Welcome: ')
       c=1
-      display_menu()
     else:
       print("Wrong details ")
       print("Do you want to retry, enter yes or no")
@@ -186,9 +194,9 @@ def main():
       elif choice == 4:
         cancel_ticket()# Implement ticket cancellation functionality
         pass
-      elif choice == 5:
-        pnr_status()# Implement PNR status check functionality
-        pass
+      #elif choice == 5:
+       # pnr_status()# Implement PNR status check functionality
+        #pass
       elif choice == 6:
         display_booked_tickets()# Implement view Fare= tickets functionality
         pass
@@ -201,6 +209,8 @@ def main():
     print("please sign_in ")
     sign_in()  
 
-#main()        
+main()        
 #planes_available()
-ticketbooking()
+#ticketbooking()
+#cancel_ticket()
+#display_booked_tickets()
