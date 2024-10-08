@@ -94,7 +94,6 @@ def display_booked_tickets():
   '''displays booksed tickets'''
   cursor4=con.cursor()
   bno=input("Enter booking number: ")
-  #urnme='df'
   cursor4.execute("SELECT * FROM tickets WHERE booking_no= %s and username= %s",(bno,urnme))
   tickets=cursor4.fetchall()
   if(len(tickets)!=0):
@@ -109,8 +108,6 @@ def cancel_ticket():
   '''cancels the ticket'''
   bno=display_booked_tickets()
   cursor5=con.cursor()
-  #urnme='df'
-  print(bno," ",type(bno))
   if(bno!=None):
     confirmation=int(input("Are you sure you want to delete the above ticket ??\n 1. yes\n 2. No\n"))
     if(confirmation==1):
@@ -204,8 +201,8 @@ def main():
     print("please sign_in ")
     sign_in()  
 
-#main()        
+main()        
 #planes_available()
 #ticketbooking()
-cancel_ticket()
+#cancel_ticket()
 #display_booked_tickets()
