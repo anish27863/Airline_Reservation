@@ -94,6 +94,7 @@ def display_booked_tickets():
   '''displays booksed tickets'''
   cursor4=con.cursor()
   bno=input("Enter booking number: ")
+  #urnme='df'
   cursor4.execute("SELECT * FROM tickets WHERE booking_no= %s and username= %s",(bno,urnme))
   tickets=cursor4.fetchall()
   if(len(tickets)!=0):
@@ -107,13 +108,17 @@ def display_booked_tickets():
 def cancel_ticket():
   '''cancels the ticket'''
   bno=display_booked_tickets()
+  cursor5=con.cursor()
+  #urnme='df'
+  print(bno," ",type(bno))
   if(bno!=None):
-    cursor4=con.cursor()
-    confirmation=input("Are you sure you want to delete the above ticket ??")
-    if(confirmation.lower=='yes'):
-      cursor4.execute("DELETE * FROM tickets WHERE booking_no=%s and username=%s",(bno,urnme))
+    confirmation=int(input("Are you sure you want to delete the above ticket ??\n 1. yes\n 2. No\n"))
+    if(confirmation==1):
+      print(urnme)
+      cursor5.execute("DELETE FROM tickets WHERE booking_no=%s and username=%s ",(bno,urnme))
       con.commit()
-
+      print("data deleted")
+  cursor5.close()  
 def sign_up():
   uid=input("Enter username ")
   name=input("Enter your name ")
@@ -155,7 +160,6 @@ def sign_in():
       if ret.lower=='no' :
         flag=False 
        
-
 def execution():
   initial_display_menu()
   choice=int(input())
@@ -200,8 +204,8 @@ def main():
     print("please sign_in ")
     sign_in()  
 
-main()        
+#main()        
 #planes_available()
 #ticketbooking()
-#cancel_ticket()
+cancel_ticket()
 #display_booked_tickets()
