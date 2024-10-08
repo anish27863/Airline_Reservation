@@ -5,7 +5,7 @@ con=mysql.connector.connect(host='127.0.0.1',user='Anish',passwd='12345',databas
 cursor=con.cursor()
 import payment as upi
 c=0
-urnme="aass"
+urnme=""
 #urnme=str(urnme)
 
 def display_menu():
@@ -114,16 +114,6 @@ def cancel_ticket():
       cursor4.execute("DELETE * FROM tickets WHERE booking_no=%s and username=%s",(bno,urnme))
       con.commit()
 
-'''def pnr_status():
-    #does the pnr status check
-    a=int(input("Enter pnr number of the ticket "))
-    if a in tickets:
-        print("Booking is confirmed")
-    else:
-        print("PNR not found") '''
-
- 
-
 def sign_up():
   uid=input("Enter username ")
   name=input("Enter your name ")
@@ -150,10 +140,11 @@ def sign_in():
   global c
   c=0
   while flag:
-    cursor1.execute("SELECT username,passw from users where username=%s and passw=%s",(uid,passw))
-    database_data=cursor.fetchall()
-    #print(database_data)
-    if(database_data==data):
+    cursor1.execute("select username,passw from users where username=%s and passw=%s",data)
+    database_data=cursor1.fetchall()
+    cursor1.close() 
+    print(database_data)
+    if(database_data[0][0]==data[0] and database_data[0][1]==data[1]):
       flag=False
       print('Welcome: ')
       c=1
@@ -163,7 +154,7 @@ def sign_in():
       ret=input()
       if ret.lower=='no' :
         flag=False 
-  cursor.close()      
+       
 
 def execution():
   initial_display_menu()
