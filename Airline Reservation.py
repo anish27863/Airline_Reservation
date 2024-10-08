@@ -6,6 +6,7 @@ cursor=con.cursor()
 import payment as upi
 c=0
 urnme=""
+#urnme=str(urnme)
 tickets={}
 
 def display_menu():
@@ -50,8 +51,45 @@ def planes_available():
 
 def ticketbooking():
   '''books the ticket'''
+  cursor3=con.cursor()
   planes_available()
-  pn=input("Enter plane number of your desired plane from the list ")
+  pno=input("Enter plane number of your desired plane from the list: ")
+  pn=list(pno)
+  f1,f2='',''
+  #values=(fare,)
+  cl=input("Enter class:\n Economy \n Business ")
+  cursor.execute("SELECT plane_number,fare1,fare2 FROM planes")
+  combfare=cursor.fetchall()
+  flg=False
+  for i in combfare:
+    if(i[0])==pno.upper():
+      f1=str(i[1])
+      f2=str(i[2])
+      flg=True
+  if(flg==False):
+    print("No planes found with the entered plane number")
+   
+  fare="0"
+  if(cl.lower()=='economy'):
+    fare=f1
+  elif(cl.lower()=='business'):
+    fare=f2
+  else:
+    print("error")    
+     
+  num_of_tic=int(input("Enter number of tickets to book: "))
+  for i in range(0,num_of_tic):
+    nameofpass=input("Enter name of passenger: ")
+    bknum=random.randint(10000,99999)
+    bknum=str(bknum)
+    values=(urnme,pno,bknum,nameofpass,cl,fare)
+    sql="INSERT INTO tickets(username,plane_number,booking_no,Passenger_Name,classs,fare) VALUES (%s,%s,%s,%s,%s,%s) "
+    try:
+      cursor3.execute(sql,values)
+      con.commit()
+      print("Ticket booked successfully")
+    except:
+      print("Error")  
 
 
 
@@ -127,7 +165,7 @@ def execution():
   elif choice==2:
     sign_up()
   elif choice==3: 
-    planes_available()#replace it with plane search functionality          
+    planes_available()         
 
 def main():
   execution()
@@ -163,5 +201,6 @@ def main():
     print("please sign_in ")
     sign_in()  
 
-main()        
+#main()        
 #planes_available()
+ticketbooking()
