@@ -6,7 +6,6 @@ cursor=con.cursor()
 import payment as upi
 c=0
 urnme=""
-#urnme=str(urnme)
 
 def display_menu():
   """Prints the menu options for the airline reservation system."""
@@ -103,7 +102,6 @@ def display_booked_tickets():
   else:
     print("Ticket not found ")
   
-
 def cancel_ticket():
   '''cancels the ticket'''
   bno=display_booked_tickets()
@@ -116,6 +114,7 @@ def cancel_ticket():
       con.commit()
       print("data deleted")
   cursor5.close()  
+
 def sign_up():
   uid=input("Enter username ")
   name=input("Enter your name ")
@@ -202,7 +201,3 @@ def main():
     sign_in()  
 
 main()        
-#planes_available()
-#ticketbooking()
-#cancel_ticket()
-#display_booked_tickets()
