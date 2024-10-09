@@ -8,14 +8,12 @@ urnme=""
 
 def display_menu():
   """Prints the menu options for the airline reservation system."""
-  print("1. Search available planes") #delete this later
-  print("2. Check seat availability")
-  print("3. Book ticket")
-  print("4. Cancel ticket")
-  print("5. Check PNR status")
-  print("6. View tickets")
-  print("7. Exit")
-  print("\nPlease enter your choice (1-7): ")
+  print("1. Search available planes")
+  print("2. Book ticket")
+  print("3. Cancel ticket")
+  print("4. View tickets")
+  print("5. Exit")
+  print("\nPlease enter your choice (1-5): ")
 
 def initial_display_menu():
   print("\nAirline Reservation System")
@@ -53,7 +51,6 @@ def ticketbooking():
   pno=input("Enter plane number of your desired plane from the list: ")
   pn=list(pno)
   f1,f2='',''
-  #values=(fare,)
   cl=input("Enter class:\n Economy \n Business \n ")
   cursor.execute("SELECT plane_number,fare1,fare2 FROM planes")
   combfare=cursor.fetchall()
@@ -154,6 +151,7 @@ def sign_in():
       ret=input()
       if ret.lower=='no' :
         flag=False 
+        exitf()
        
 def execution():
   initial_display_menu()
@@ -172,25 +170,18 @@ def main():
       display_menu()
       choice = int(input())
       if choice == 1:
-        # Implement Plane search functionality
-        planes_available()
+        planes_available() # Implement Plane search functionality
         pass
-      #elif choice == 2:
-        #seat_availability()
-        # Implement seat availability check functionality
-        pass
-      elif choice == 3:
+      elif choice == 2:
           ticketbooking() # Implement ticket booking functionality
-      elif choice == 4:
+          pass
+      elif choice == 3:
         cancel_ticket()# Implement ticket cancellation functionality
         pass
-      #elif choice == 5:
-       # pnr_status()# Implement PNR status check functionality
-        #pass
-      elif choice == 6:
+      elif choice == 4:
         display_booked_tickets()# Implement view Fare= tickets functionality
         pass
-      elif choice == 7:
+      elif choice == 5:
         exitf()
         break
       else:
