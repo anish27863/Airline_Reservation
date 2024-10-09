@@ -36,7 +36,7 @@ def planes_available():
   SQL="SELECT * FROM planes WHERE departure_place= %s and reaching_place= %s"
   cursor2.execute(SQL,val)
   dt=cursor2.fetchall()
-  #cursor.close()
+
   if len(dt)!=0:
     print("Found the following flights ")
     print(pd.DataFrame.from_records(dt,columns=["Plane number","Destination","Source","Departure Time","Arrival Time","Airline Company","Economy Class Fare", "Business Class Fare"]).reset_index(drop=True))
@@ -121,7 +121,7 @@ def sign_up():
   sql="INSERT INTO users(username,Full_Name,email,phone,passw) VALUES(%s,%s,%s,%s,%s)"
   cursor.execute(sql,values)
   con.commit()
-  #cursor.close()
+  
 
   print("Now login using your details: ")
   sign_in()
