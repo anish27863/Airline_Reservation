@@ -129,28 +129,26 @@ def sign_up():
 def sign_in():
   global urnme
   cursor1=con.cursor()
-  uid=input("Enter username: ")
-  urnme=uid
-  passw=input("Enter password: ")
-  data=(uid,passw)
   flag=True
   global c
   c=0
   while flag:
+    uid=input("Enter username: ")
+    urnme=uid
+    passw=input("Enter password: ")
+    data=(uid,passw)
     cursor1.execute("select username,passw from users where username=%s and passw=%s",data)
     database_data=cursor1.fetchall()
-    cursor1.close() 
-    print(database_data)
-    if(database_data[0][0]==data[0] and database_data[0][1]==data[1]):
+     
+    if(data in database_data):
       flag=False
       print('Welcome: ')
       c=1
     else:
       print("Wrong details ")
-      print("Do you want to retry, enter yes or no")
-      ret=input()
-      if ret.lower=='no' :
-        flag=False 
+      ret=input("Do you want to retry, enter yes or no: \n\t")
+      if ret.lower()=='no' :
+        cursor1.close()
         exitf()
        
 def execution():
