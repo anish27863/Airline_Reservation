@@ -14,7 +14,7 @@ def display_menu():
   print("4. View tickets")
   print("5. Exit")
   print("\nPlease enter your choice (1-5): ")
-  print("-"*30,"\n")
+  print("-"*120,"\n")
 
 def initial_display_menu():
   print("\nAirline Reservation System")
@@ -23,14 +23,14 @@ def initial_display_menu():
   print("2.Sign up ")
   print("3.Search planes ")
   print("\nPlease enter your choice (1-3): ")
-  print("-"*30,"\n")
+  print("-"*120,"\n")
 
 def exitf():
   print("Exiting the system...")
   exit()
 
 def spacer():
-  print("-"*30)
+  print("-"*120)
   print("\n\n\n")  
 
 def planes_available():
@@ -155,6 +155,7 @@ def sign_in():
     if(data in database_data):
       flag=False
       print('Welcome: ')
+      spacer()
       c=1
     else:
       print("Wrong details ")
