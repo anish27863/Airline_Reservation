@@ -14,6 +14,7 @@ def display_menu():
   print("4. View tickets")
   print("5. Exit")
   print("\nPlease enter your choice (1-5): ")
+  print("-"*30,"\n")
 
 def initial_display_menu():
   print("\nAirline Reservation System")
@@ -22,10 +23,15 @@ def initial_display_menu():
   print("2.Sign up ")
   print("3.Search planes ")
   print("\nPlease enter your choice (1-3): ")
+  print("-"*30,"\n")
 
 def exitf():
   print("Exiting the system...")
   exit()
+
+def spacer():
+  print("-"*30)
+  print("\n\n\n")  
 
 def planes_available():
   cursor2=con.cursor()
@@ -43,6 +49,7 @@ def planes_available():
   else:
     print("NO planes found")    
   cursor2.close()
+  spacer()
 
 def ticketbooking():
   '''books the ticket'''
@@ -82,8 +89,11 @@ def ticketbooking():
       cursor3.execute(sql,values)
       con.commit()
       print("Ticket booked successfully")
+      print(f"please note the booking number {bknum} for future refference")
     except:
-      print("Error")  
+      print("Error")
+
+  spacer()      
 
 def display_booked_tickets():
   '''displays booksed tickets'''
@@ -97,6 +107,7 @@ def display_booked_tickets():
     return bno    
   else:
     print("Ticket not found ")
+  spacer()  
   
 def cancel_ticket():
   '''cancels the ticket'''
@@ -109,7 +120,8 @@ def cancel_ticket():
       cursor5.execute("DELETE FROM tickets WHERE booking_no=%s and username=%s ",(bno,urnme))
       con.commit()
       print("data deleted")
-  cursor5.close()  
+  cursor5.close()
+  spacer()  
 
 def sign_up():
   uid=input("Enter username ")
@@ -121,7 +133,7 @@ def sign_up():
   sql="INSERT INTO users(username,Full_Name,email,phone,passw) VALUES(%s,%s,%s,%s,%s)"
   cursor.execute(sql,values)
   con.commit()
-  
+  spacer()
 
   print("Now login using your details: ")
   sign_in()
