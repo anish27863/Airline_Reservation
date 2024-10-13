@@ -34,6 +34,7 @@ def spacer():
   print("\n\n\n")  
 
 def planes_available():
+  '''displays the list of planes available between source and destination'''
   cursor2=con.cursor()
   '''prints available planes'''
   strt=input("Enter source ")
@@ -96,7 +97,7 @@ def ticketbooking():
   spacer()      
 
 def display_booked_tickets():
-  '''displays booksed tickets'''
+  '''displays booked tickets'''
   cursor4=con.cursor()
   bno=input("Enter booking number: ")
   cursor4.execute("SELECT * FROM tickets WHERE booking_no= %s and username= %s",(bno,urnme))
@@ -124,6 +125,7 @@ def cancel_ticket():
   spacer()  
 
 def sign_up():
+  '''Adds new user'''
   uid=input("Enter username ")
   name=input("Enter your name ")
   email=input("Enter email address ")
@@ -139,6 +141,7 @@ def sign_up():
   sign_in()
 
 def sign_in():
+  '''Log in existing user'''
   global urnme
   cursor1=con.cursor()
   flag=True
